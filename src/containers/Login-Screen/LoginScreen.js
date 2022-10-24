@@ -24,29 +24,25 @@ const LoginScreen = (props) => {
     };
   }, [isFocused]);
 
-  const handleLogin = () => {
-    if (values.roomName === '') {
-      Alert.alert('Room Name is required');
-    } else {
-      if (values.userName === '') {
-        Alert.alert('UserName is required');
-      } else {
-        let id = uuidv4();
+const handleLogin = () => {
+    if (values.roomName && values.userName) {
+      const id = uuidv4();
+      SOCKET.connect();
+      SOCKET.emit('joinGroup', {username: values.username, roomName: values.roomName});
+          props.navigation.navigate('chat', {
+            username: values.username,
+            roomName: values.roomName,
+            id,
+          }
+          );
 
-        SOCKET.connect();
-        SOCKET.emit('joinGroup', {
-          username: values.userName,
-          room: values.roomName,
-        });
-        props.navigation.navigate('chat', {
-          username: values.userName,
-          room: values.roomName,
-          userId: id,
-        });
-      }
+    } else if (!values.roomName) {
+      Alert.alert('Please enter room name');
+    } else if(!values.userName) {
+      Alert.alert('Please enter user name');
     }
   };
-
+   
   return (
     <View style={styles.loginScreenContainer}>
       {/* <AppHeader headerTitle="Login" /> */}
