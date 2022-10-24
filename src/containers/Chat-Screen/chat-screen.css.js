@@ -5,8 +5,9 @@ export default StyleSheet.create({
     backgroundColor: '#ffffff',
     borderTopWidth: 0,
     marginHorizontal: 10,
+    marginBottom: 10,
     // marginLeft: '12%', // add icon
-    borderRadius: 80,
+    borderRadius: 50,
     borderColor: '#FFE0E0',
   },
   inputToolbarTouchableOpacity: {

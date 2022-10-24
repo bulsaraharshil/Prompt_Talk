@@ -1,6 +1,6 @@
 import React, {useState, useCallback, useEffect, useRef} from 'react';
 import {GiftedChat, InputToolbar, Send, Bubble} from 'react-native-gifted-chat';
-import {TouchableOpacity} from 'react-native';
+import {TouchableOpacity, Image, Alert} from 'react-native';
 import AppHeader from '../../components/App-Header/AppHeader';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import styles from './chat-screen.css';
@@ -46,7 +46,7 @@ const ChatScreen = (props) => {
               color: '#000000',
               flex: 1,
               alignItems: 'center',
-              paddingHorizontal: 20,
+              paddingHorizontal: 22,
             },
             multiline: true,
             returnKeyType: 'go',
@@ -69,13 +69,33 @@ const ChatScreen = (props) => {
     );
   };
 
+  // const renderSend = (props) => {
+  //   return (
+  //     <>
+  //       <Send {...props}>
+  //         <Ionicons name="send" size={28} style={styles.sendIcon} />
+  //       </Send>
+  //     </>
+  //   );
+  // };
+
+  // const renderSend = (sendProps) => {
+  //   if (sendProps.text.trim().length > 0) {
+  //     return (
+  //       <TouchableOpacity {...props}>
+  //         <Ionicons name="send" size={28} style={styles.sendIcon} />
+  //       </TouchableOpacity>
+  //     );
+  //   }
+  //   return null;
+  // }
+
+
   const renderSend = (props) => {
     return (
-      <>
-        <Send {...props}>
-          <Ionicons name="send" size={28} style={styles.sendIcon} />
-        </Send>
-      </>
+      <Send {...props}>
+        <Ionicons name="send" size={28} />
+      </Send>
     );
   };
 
@@ -106,18 +126,32 @@ const ChatScreen = (props) => {
     props.navigation.navigate('login');
   };
 
+  const showAlert = () => {
+    Alert.alert(
+      'Leave Group',
+      'Are you sure you want to leave the group?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {text: 'OK', onPress: () => leftFromGroup()},
+      ],
+      {cancelable: false},
+    );
+  };
+
   return (
     <>
       <AppHeader
-        headerTitle={props.route.params.room}
-        rightComponent={
+      headerTitle={props.route.params.roomName}
+      rightComponent={
           <>
             <TouchableOpacity
-              onPress={() => {
-                leftFromGroup();
-              }}>
+              onPress = {showAlert}>
               <Text style={styles.leftGroupButton}>
-                Left
+                Left 
                 <Ionicons name="backspace-outline" size={16} color="#ffffff" />
               </Text>
             </TouchableOpacity>
