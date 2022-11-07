@@ -12,10 +12,16 @@ import {v4 as uuidv4} from 'uuid';
 
 const LoginScreen = (props) => {
   const isFocused = useIsFocused();
-  const [values, setValues] = useState({});
+  const [values, setValues] = useState({
+    userName:'',
+    roomName:'',
+    id:'',
+  });
 
   const handleChange = (name) => (text) => {
+    
     setValues({...values, [name]: text});
+    console.log(values);
   };
 
   useEffect(() => {
@@ -25,22 +31,23 @@ const LoginScreen = (props) => {
   }, [isFocused]);
 
 const handleLogin = () => {
+ 
     if (values.roomName && values.userName) {
       const id = uuidv4();
       SOCKET.connect();
-      SOCKET.emit('joinGroup', {username: values.username, roomName: values.roomName});
+      SOCKET.emit('join', {username: values.userName, room: values.roomName});
           props.navigation.navigate('chat', {
-            username: values.username,
+            username: values.userName,
             roomName: values.roomName,
             id,
           }
           );
-
     } else if (!values.roomName) {
       Alert.alert('Please enter room name');
     } else if(!values.userName) {
       Alert.alert('Please enter user name');
-    }
+    } 
+
   };
    
   return (
