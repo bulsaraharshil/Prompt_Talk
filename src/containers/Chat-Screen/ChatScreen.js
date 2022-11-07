@@ -5,7 +5,11 @@ import AppHeader from '../../components/App-Header/AppHeader';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import styles from './chat-screen.css';
 import {SOCKET} from '../../config/config';
+
 import {Text} from 'react-native-elements';
+
+
+//  const socket = io()
 
 const ChatScreen = (props) => {
   const [messages, setMessages] = useState([]);
@@ -13,14 +17,33 @@ const ChatScreen = (props) => {
 
   useEffect(() => {
     SOCKET.on('message', (data) => {
-      console.log(props.route.params.userId);
-      if (props.route.params.userId !== data[0].user._id) {
-        if (!isRendered.current) {
-          setMessages((previousMessages) =>
-            GiftedChat.append(previousMessages, data),
-          );
+      if(data.length!== undefined){
+        console.log("Client side if part:",data);
+        if (props.route.params.id !== data[0].user._id) {
+          if (!isRendered.current) {
+            console.log("Inside Message gifted",isRendered.current);
+            setMessages((previousMessages) =>
+              GiftedChat.append(previousMessages, data),
+            );
+          }
         }
       }
+      else if (data.length === undefined){
+        console.log("Client side else part:",messages);
+        if (props.route.params.id !== data.id) {
+          if (!isRendered.current) {
+            console.log("Inside Message gifted",isRendered.current);
+            setMessages((previousMessages) =>
+              GiftedChat.append(previousMessages, data),
+            );
+          }
+        }
+      }
+      else{
+        console.log("No data");
+      }
+      console.log(props.route.params.username);
+  
     });
     return () => {
       isRendered.current = true;
@@ -28,7 +51,8 @@ const ChatScreen = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onSend = useCallback((message = []) => {
+  const onSend = useCallback((message =[]) => {
+    console.log("Message on send:::",message);
     setMessages((previousMessages) =>
       GiftedChat.append(previousMessages, message),
     );
@@ -167,7 +191,7 @@ const ChatScreen = (props) => {
         renderUsernameOnMessage={true}
         onSend={(messages) => onSend(messages)}
         user={{
-          _id: props.route.params.userId,
+          _id: props.route.params.id,
           name: props.route.params.username,
         }}
       />

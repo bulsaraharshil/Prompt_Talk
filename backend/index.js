@@ -1,87 +1,74 @@
-const path = require("path");
-const http = require("http");
-const express = require("express");
-const socketio = require("socket.io");
-const formatMessage = require("./utils/messages");
-const createAdapter = require("@socket.io/redis-adapter").createAdapter;
-const redis = require("redis");
-require("dotenv").config();
-const { createClient } = redis;
-const {
-  userJoin,
-  getCurrentUser,
-  userLeave,
-  getRoomUsers
-} = require('./utils/users');
+const path = require('path');
+const http = require('http');
+const express = require('express');
+const socketio = require('socket.io');
+
+const {generateMessage, generateLocationMessage} = require('./utils/messages');
+const {addUser, removeUser, getUser, getUsersInRoom} = require('./utils/users');
 
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
-const botName = "Prompt Talk Bot";
+const PORT = process.env.PORT || 3000;
+const publicDirectoryPath = path.join(__dirname, 'src');
 
-// Set static folder
-app.use(express.static(path.join(__dirname, "src")));
+app.use(express.static(publicDirectoryPath)); //To use the components of Public Directory
 
-(async () => {
-  pubClient = createClient({ url: "redis://127.0.0.1:6379" });
-  await pubClient.connect();
-  subClient = pubClient.duplicate();
-  io.adapter(createAdapter(pubClient, subClient));
-})();
+io.on('connection', (socket) => {
+    console.log("New WebSocket Connection");
 
-// Run when client connects
-io.on("connection", (socket) => {
-  console.log(io.of("/").adapter);
-  socket.on("joinRoom", ({ username, room }) => {
-    const user = userJoin(socket.id, username, room);
+    socket.on('join', ({username, room}, callback) => {
+        console.log("ENtered in Connection",username,room);
+        const{ error, user} = addUser({id: socket.id, username, room});
+        console.log("CHATT:",user);
+        if (error) {
+            return callback(error);
+        }
 
-    socket.join(user.room);
-
-    // Welcome current user
-    socket.emit("message", formatMessage(botName, "Welcome to Prompt Talk!"));
-
-    // Broadcast when a user connects
-    socket.broadcast
-      .to(user.room)
-      .emit(
-        "message",
-        formatMessage(botName, `${user.username} has joined the chat`)
-      );
-
-    // Send users and room info
-    io.to(user.room).emit("roomUsers", {
-      room: user.room,
-      users: getRoomUsers(user.room),
+        socket.join(user.room);
+        
+        socket.emit('message',generateMessage("Welcome!","Admin"));
+        socket.broadcast.to(user.room).emit('message',generateMessage(`${user.username} has joined!`,"Admin"));
+        io.to(user.room).emit('roomData',{
+            room:user.room,
+            users: getUsersInRoom(user.room)
+        });
+        //  callback();
     });
-  });
 
-  // Listen for chatMessage
-  socket.on("chatMessage", (msg) => {
-    const user = getCurrentUser(socket.id);
 
-    io.to(user.room).emit("message", formatMessage(user.username, msg));
-  });
+    socket.on('chatMessage', (message, callback) => {
+        console.log("Inside chatMessage");
+        const user = getUser(socket.id);
+        console.log("Inside chatMessage ::", user);
+        // const filter = new Filter();
+        // if(filter.isProfane(message)){
+        //     return callback('Profanity is not allowed!');
+        // }
+        io.to(user.room).emit('message',message);
+        // callback();
+    });
 
-  // Runs when client disconnects
-  socket.on("disconnect", () => {
-    const user = userLeave(socket.id);
+    // socket.on('sendLocation',(coords, callback) => {
+    //     const user = getUser(socket.id);
+    //     io.to(user.room).emit('locationMessage', generateLocationMessage(user.username, `https://google.com/maps?q=${coords.latitude},${coords.longitude}`));
+    //     callback();
+    // });
+    socket.on('disconnect', ()=> {
+        const user = removeUser(socket.id);
 
-    if (user) {
-      io.to(user.room).emit(
-        "message",
-        formatMessage(botName, `${user.username} has left the chat`)
-      );
+        if(user) {
+            io.to(user.room).emit('message', generateMessage(` ${user.username} has left`,"Admin"));
+            io.to(user.room).emit('roomData',{
+                room:user.room,
+                users: getUsersInRoom(user.room)
+            });
+        }
 
-      // Send users and room info
-      io.to(user.room).emit("roomUsers", {
-        room: user.room,
-        users: getRoomUsers(user.room),
-      });
-    }
-  });
+    });
 });
 
-const PORT = process.env.PORT || 3000;
-
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+server.listen(PORT, () => {
+    console.log("Server is running on Port:", PORT);
+});

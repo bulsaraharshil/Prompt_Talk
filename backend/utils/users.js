@@ -1,36 +1,64 @@
-const users = [];
+const users = []
 
-// Join user to chat
-function userJoin(id, username, room) {
-  const user = {id, username, room};
+const addUser = ({id, username, room}) => {
+    console.log("Inside addUser",id,username,room);
+    //clean the data
+    username = username
+    room = room
 
-  users.push(user);
+    //Validate the data
+    if(!username || !room) {
+        return {
+            error: 'Username and room are required'
+        };
+    }
 
-  return user;
+    //Check for existing user
+    const existingUser = users.find((user) => user.room === room && user.username === username);
+
+    //Validate username
+    if(existingUser) {
+        
+            console.log( "Username is in user") 
+      
+    }
+
+    //Store User
+    const user = {id, username, room}
+    users.push(user);
+    console.log("USER::",user);
+    return {user};
+};
+
+const removeUser = (id) => {
+    const index = users.findIndex((user) => user.id === id);
+
+    if(index !== -1) {
+        return users.splice(index,1)[0];
+    }
 }
 
-// Get current user
-function getCurrentUser(id) {
-  return users.find((user) => user.id === id);
+const getUser = (id) => {
+    const user = users.find((user) => user.id === id);
+    if(!user){
+        return undefined;
+    }
+    return user;
 }
 
-// User leaves group chat
-function userLeave(id) {
-  const index = users.findIndex((user) => user.id === id);
-
-  if (index !== -1) {
-    return users.splice(index, 1)[0];
-  }
+const getUsersInRoom = (room) => {
+    // room = 5
+    const usersInRoom = users.filter((user) => user.room === room);
+    if(usersInRoom.length === 0){
+        return [];
+    }
+    return usersInRoom;
 }
 
-// Get room users
-function getRoomUsers(room) {
-  return users.filter(user => user.room === room);
-}
 
 module.exports = {
-  userJoin,
-  getCurrentUser,
-  userLeave,
-  getRoomUsers
-};
+    addUser,
+    removeUser,
+    getUser,
+    getUsersInRoom
+}

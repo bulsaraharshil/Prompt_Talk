@@ -1,11 +1,20 @@
-const moment = require('moment');
-
-function formatMessage(username, text) {
+const generateMessage = (text,username) => {
   return {
-    username,
-    text,
-    time: moment().format('h:mm a')
-  };
+      username,
+      text,
+      createdAt: new Date().getTime()
+  }
 }
 
-module.exports = formatMessage;
+const generateLocationMessage = (username, url) => {
+  return {
+      username,
+      url,
+      createdAt: new Date().getTime()
+  }
+}
+
+module.exports = {
+  generateMessage,
+  generateLocationMessage
+}
