@@ -1,6 +1,6 @@
 import React, {useState, useCallback, useEffect, useRef} from 'react';
 import {GiftedChat, InputToolbar, Send, Bubble} from 'react-native-gifted-chat';
-import {TouchableOpacity, Image, Alert, ImageBackground, SafeAreaView} from 'react-native';
+import {TouchableOpacity, Image, Alert,  ImageBackground, SafeAreaView} from 'react-native';
 import AppHeader from '../../components/App-Header/AppHeader';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import styles from './chat-screen.css';
@@ -210,5 +210,7 @@ const ChatScreen = (props) => {
     </>
   );
 };
+
+
 
 export default ChatScreen;

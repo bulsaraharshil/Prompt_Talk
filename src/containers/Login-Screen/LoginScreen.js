@@ -73,7 +73,7 @@ const handleLogin = () => {
         <View>
           <MyTextInput
             placeholder="Enter Room Name"
-            placeholderTextColor="#fff" 
+            placeholderTextColor="#fff"  
             style={styles.textInput}
             value={values.roomName}
             onChangeText={handleChange('roomName')}

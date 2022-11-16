@@ -8,6 +8,7 @@ const MyTextInput = (props) => {
     <View style={styles.viewInput}>
       <Input
         placeholder={props.placeholder}
+        placeholderTextColor={props.red}
         errorStyle={props.errorStyle}
         onChangeText={props.onChangeText}
         errorMessage={props.errorMessage}

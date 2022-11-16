@@ -26,7 +26,8 @@ export default StyleSheet.create({
   },
   leftGroupButton: {
     color: 'white',
-  },container: {
+  },
+  container: {
     flex: 1,
     padding: 0,
   },
