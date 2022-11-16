@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Alert} from 'react-native';
+import {View, Alert, Image, ImageBackground, SafeAreaView} from 'react-native';
 import {Card} from 'react-native-elements';
 import MyTextInput from '../../components/My-TextInput/MyTextInput';
 import MyButton from '../../components/My-Button/MyButton';
@@ -9,7 +9,8 @@ import 'react-native-get-random-values';
 import {useIsFocused} from '@react-navigation/native';
 import 'react-native-get-random-values';
 import {v4 as uuidv4} from 'uuid';
-
+import { withSafeAreaInsets } from 'react-native-safe-area-context';
+const image = "https://raw.githubusercontent.com/AboutReact/sampleresource/master/crystal_background.jpg";
 const LoginScreen = (props) => {
   const isFocused = useIsFocused();
   const [values, setValues] = useState({
