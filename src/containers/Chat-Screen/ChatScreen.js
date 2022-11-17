@@ -1,6 +1,6 @@
 import React, {useState, useCallback, useEffect, useRef} from 'react';
 import {GiftedChat, InputToolbar, Send, Bubble} from 'react-native-gifted-chat';
-import {TouchableOpacity, Image, Alert} from 'react-native';
+import {TouchableOpacity, Image, Alert,  ImageBackground, SafeAreaView} from 'react-native';
 import AppHeader from '../../components/App-Header/AppHeader';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import styles from './chat-screen.css';
@@ -168,6 +168,16 @@ const ChatScreen = (props) => {
 
   return (
     <>
+     <SafeAreaView style={styles.container}>
+     <ImageBackground
+        style={{ flex: 1 }}
+        //We are using online image to set background
+        source={{
+          uri:
+            'http://arjavrathod.com/wp-content/uploads/2022/11/987.jpg',
+        }}
+        
+      >
       <AppHeader
       headerTitle={props.route.params.roomName}
       rightComponent={
@@ -175,7 +185,7 @@ const ChatScreen = (props) => {
             <TouchableOpacity
               onPress = {showAlert}>
               <Text style={styles.leftGroupButton}>
-                Left 
+              Leave Group 
                 <Ionicons name="backspace-outline" size={16} color="#ffffff" />
               </Text>
             </TouchableOpacity>
@@ -195,8 +205,12 @@ const ChatScreen = (props) => {
           name: props.route.params.username,
         }}
       />
+      </ImageBackground>
+      </SafeAreaView>
     </>
   );
 };
+
+
 
 export default ChatScreen;
