@@ -1,22 +1,22 @@
 const users = []
 
-const addUser = ({id, username, room}) => {
-    console.log("Inside addUser",id,username,room);
+const addUser = ({id, userName, room}) => {
+    console.log("Inside addUser",id,userName,room);
     //clean the data
-    username = username
+    userName = userName
     room = room
 
     //Validate the data
-    if(!username || !room) {
+    if(!userName || !room) {
         return {
             error: 'Username and room are required'
         };
     }
 
     //Check for existing user
-    const existingUser = users.find((user) => user.room === room && user.username === username);
+    const existingUser = users.find((user) => user.room === room && user.userName === userName);
 
-    //Validate username
+    //Validate userName
     if(existingUser) {
         
             console.log( "Username is in user") 
@@ -24,7 +24,7 @@ const addUser = ({id, username, room}) => {
     }
 
     //Store User
-    const user = {id, username, room}
+    const user = {id, userName, room}
     users.push(user);
     console.log("USER::",user);
     return {user};

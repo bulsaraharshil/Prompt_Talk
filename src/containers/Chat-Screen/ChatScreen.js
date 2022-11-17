@@ -1,12 +1,12 @@
-import React, {useState, useCallback, useEffect, useRef} from 'react';
-import {GiftedChat, InputToolbar, Send, Bubble} from 'react-native-gifted-chat';
-import {TouchableOpacity, Image, Alert,  ImageBackground, SafeAreaView} from 'react-native';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
+import { GiftedChat, InputToolbar, Send, Bubble } from 'react-native-gifted-chat';
+import { TouchableOpacity, Image, Alert, ImageBackground, SafeAreaView, View } from 'react-native';
 import AppHeader from '../../components/App-Header/AppHeader';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import styles from './chat-screen.css';
-import {SOCKET} from '../../config/config';
+import { SOCKET } from '../../config/config';
 
-import {Text} from 'react-native-elements';
+import { Header, Text } from 'react-native-elements';
 
 
 //  const socket = io()
@@ -17,33 +17,33 @@ const ChatScreen = (props) => {
 
   useEffect(() => {
     SOCKET.on('message', (data) => {
-      if(data.length!== undefined){
-        console.log("Client side if part:",data);
+      if (data.length !== undefined) {
+        console.log("Client side if part:", data);
         if (props.route.params.id !== data[0].user._id) {
           if (!isRendered.current) {
-            console.log("Inside Message gifted",isRendered.current);
+            console.log("Inside Message gifted", isRendered.current);
             setMessages((previousMessages) =>
               GiftedChat.append(previousMessages, data),
             );
           }
         }
       }
-      else if (data.length === undefined){
-        console.log("Client side else part:",messages);
+      else if (data.length === undefined) {
+        console.log("Client side else part:", messages);
         if (props.route.params.id !== data.id) {
           if (!isRendered.current) {
-            console.log("Inside Message gifted",isRendered.current);
+            console.log("Inside Message gifted", isRendered.current);
             setMessages((previousMessages) =>
               GiftedChat.append(previousMessages, data),
             );
           }
         }
       }
-      else{
+      else {
         console.log("No data");
       }
-      console.log(props.route.params.username);
-  
+      console.log(props.route.params.userName);
+
     });
     return () => {
       isRendered.current = true;
@@ -51,8 +51,8 @@ const ChatScreen = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onSend = useCallback((message =[]) => {
-    console.log("Message on send:::",message);
+  const onSend = useCallback((message = []) => {
+    console.log("Message on send:::", message);
     setMessages((previousMessages) =>
       GiftedChat.append(previousMessages, message),
     );
@@ -77,7 +77,7 @@ const ChatScreen = (props) => {
             onSubmitEditing: () => {
               if (props.text && props.onSend) {
                 let text = props.text;
-                props.onSend({text: text.trim()}, true);
+                props.onSend({ text: text.trim() }, true);
               }
             },
           }}
@@ -160,53 +160,54 @@ const ChatScreen = (props) => {
           onPress: () => console.log('Cancel Pressed'),
           style: 'cancel',
         },
-        {text: 'OK', onPress: () => leftFromGroup()},
+        { text: 'OK', onPress: () => leftFromGroup() },
       ],
-      {cancelable: false},
+      { cancelable: false },
     );
   };
 
   return (
     <>
-     <SafeAreaView style={styles.container}>
-     <ImageBackground
-        style={{ flex: 1 }}
-        //We are using online image to set background
-        source={{
-          uri:
-            'http://arjavrathod.com/wp-content/uploads/2022/11/987.jpg',
-        }}
-        
-      >
-      <AppHeader
-      headerTitle={props.route.params.roomName}
-      rightComponent={
-          <>
-            <TouchableOpacity
-              onPress = {showAlert}>
-              <Text style={styles.leftGroupButton}>
-              Leave Group 
-                <Ionicons name="backspace-outline" size={16} color="#ffffff" />
-              </Text>
-            </TouchableOpacity>
-          </>
-        }
-      />
-      <GiftedChat
-        messages={messages}
-        renderBubble={renderBubble}
-        renderInputToolbar={renderInputToolbar}
-        renderSend={renderSend}
-        renderAvatar={null}
-        renderUsernameOnMessage={true}
-        onSend={(messages) => onSend(messages)}
-        user={{
-          _id: props.route.params.id,
-          name: props.route.params.username,
-        }}
-      />
-      </ImageBackground>
-      </SafeAreaView>
+      <View style={styles.container}>
+        <ImageBackground
+          style={{ flex: 1 }}
+          //We are using online image to set background
+          source={{
+            uri:
+              'http://arjavrathod.com/wp-content/uploads/2022/11/987.jpg',
+          }}
+
+        >
+          <Header
+            leftComponent={props.route.params.userName}
+            centerComponent={ props.route.params.roomName}
+            rightComponent={
+              <>
+                <TouchableOpacity
+                  onPress={showAlert}>
+                  <Text style={styles.leftGroupButton}>
+                    Leave
+                    <Ionicons name="backspace-outline" size={16} color="#ffffff" />
+                  </Text>
+                </TouchableOpacity>
+              </>
+            }
+          />
+          <GiftedChat
+            messages={messages}
+            renderBubble={renderBubble}
+            renderInputToolbar={renderInputToolbar}
+            renderSend={renderSend}
+            renderAvatar={null}
+            renderUsernameOnMessage={true}
+            onSend={(messages) => onSend(messages)}
+            user={{
+              _id: props.route.params.id,
+              name: props.route.params.userName,
+            }}
+          />
+        </ImageBackground>
+      </View>
     </>
   );
 };
