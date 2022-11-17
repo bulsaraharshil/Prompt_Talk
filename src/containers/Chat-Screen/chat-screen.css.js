@@ -27,4 +27,20 @@ export default StyleSheet.create({
   leftGroupButton: {
     color: 'white',
   },
+  container: {
+    flex: 1,
+    padding: 0,
+  },
+  titleStyle: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    padding: 10,
+  },
+  centerContentStyle: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },textInput:{
+    color:'red',
+  },
 });
