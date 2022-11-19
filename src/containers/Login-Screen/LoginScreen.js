@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, Alert, Image, ImageBackground, SafeAreaView } from 'react-native';
 import { Card } from 'react-native-elements';
-import MyTextInput from '../../components/My-TextInput/MyTextInput';
+// import MyRoomNumberTextInput from '../../components/My-TextInput/MyRoomNumberTextInput';
+import MyRoomNumberTextInput from '../../components/My-TextInput/MyRoomNumberTextInput';
+import MyUserNameTextInput from '../../components/My-TextInput/MyUserNameTextInput';
 import MyButton from '../../components/My-Button/MyButton';
 import styles from './login-screen.css';
 import { SOCKET } from '../../config/config';
@@ -19,8 +21,26 @@ const LoginScreen = (props) => {
     id: '',
   });
 
-  const handleChange = (name) => (text) => {
+  const handleRoomChange = (name) => (text) => {
 
+    let newText = '';
+    let numbers = '0123456789';
+
+    for (var i=0; i < text.length; i++) {
+        if(numbers.indexOf(text[i]) > -1 ) {
+            newText = newText + text[i];
+        }
+        else {
+            // your call back function
+            alert("please enter numbers only");
+        }
+    }
+    // this.setState({ myNumber: newText });
+    setValues({ ...values, [name]: newText });
+    console.log(values);
+  };
+
+  const handleUserChange = (name) => (text) => {
     setValues({ ...values, [name]: text });
     console.log(values);
   };
@@ -44,7 +64,7 @@ const LoginScreen = (props) => {
       }
       );
     } else if (!values.roomName) {
-      Alert.alert('Please enter room name');
+      Alert.alert('Please enter room number');
     } else if (!values.userName) {
       Alert.alert('Please enter user name');
     }
@@ -71,19 +91,19 @@ const LoginScreen = (props) => {
             <Card.Title>Prompt Talk</Card.Title>
             <Card.Divider />
             <View>
-              <MyTextInput
-                placeholder="Enter Room Name"
+              <MyRoomNumberTextInput
+                placeholder="Enter Room Number"
                 placeholderTextColor="#fff"
                 style={styles.textInput}
                 value={values.roomName}
-                onChangeText={handleChange('roomName')}
+                onChangeText={handleRoomChange('roomName')}
               />
-              <MyTextInput
+              <MyUserNameTextInput
                 placeholder="Enter Username"
                 placeholderTextColor="white"
                 style={styles.textInput}
                 value={values.userName}
-                onChangeText={handleChange('userName')}
+                onChangeText={handleUserChange('userName')}
               />
               <MyButton
                 title="Login"
