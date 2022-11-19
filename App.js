@@ -6,6 +6,7 @@ import { LogBox } from 'react-native';
 const App = () => {
   return (
     LogBox.ignoreAllLogs(),
+    LogBox.ignoreLogs(['Warning: ...']),
     <>
       <RootNavigator />
     </>
