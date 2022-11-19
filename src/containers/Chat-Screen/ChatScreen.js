@@ -179,8 +179,8 @@ const ChatScreen = (props) => {
 
         >
           <Header
-            leftComponent={props.route.params.userName}
-            centerComponent={ props.route.params.roomName}
+            leftComponent={{style:{fontSize: 15, fontWeight: "bold"} ,text: props.route.params.userName}}
+            centerComponent={{style: {fontSize: 15, fontWeight: "bold"}, text:props.route.params.roomName}}
             rightComponent={
               <>
                 <TouchableOpacity
@@ -193,7 +193,7 @@ const ChatScreen = (props) => {
               </>
             }
           />
-          <GiftedChat
+          <GiftedChat 
             messages={messages}
             renderBubble={renderBubble}
             renderInputToolbar={renderInputToolbar}

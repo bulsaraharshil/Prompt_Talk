@@ -26,10 +26,18 @@ export default StyleSheet.create({
   },
   leftGroupButton: {
     color: 'white',
+    fontSize: 15,
+    fontWeight: 'bold',
   },
   container: {
     flex: 1,
     padding: 0,
+  },
+  chatFont:{
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    padding: 10,
   },
   titleStyle: {
     fontSize: 28,
@@ -40,7 +48,9 @@ export default StyleSheet.create({
   centerContentStyle: {
     justifyContent: 'center',
     alignItems: 'center',
-  },textInput:{
+  },
+  textInput:{
     color:'red',
   },
+
 });
