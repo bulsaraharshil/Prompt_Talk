@@ -147,7 +147,7 @@ const ChatScreen = (props) => {
 
   const leftFromGroup = () => {
     SOCKET.disconnect();
-    props.navigation.navigate('login');
+    props.navigation.navigate('Login');
   };
 
   const showAlert = () => {
@@ -178,7 +178,7 @@ const ChatScreen = (props) => {
           }}
 
         >
-          <Header
+          <Header 
             leftComponent={{style:{fontSize: 15, fontWeight: "bold"} ,text: props.route.params.userName}}
             centerComponent={{style: {fontSize: 15, fontWeight: "bold"}, text:props.route.params.roomName}}
             rightComponent={

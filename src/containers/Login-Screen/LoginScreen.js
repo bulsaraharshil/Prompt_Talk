@@ -73,19 +73,18 @@ const LoginScreen = (props) => {
 
   return (
     <View style={styles.container}>
-      <ImageBackground
+      <ImageBackground 
         style={{ flex: 1 }}
-        //We are using online image to set background
-        source={{
-          uri:
-            'https://raw.githubusercontent.com/AboutReact/sampleresource/master/crystal_background.jpg',
-        }}
+        //We are using local image to set background
+        source={require('../../../assets/Login.png')}
+
+      
       //You can also set image from your project folder
       //require('./images/background_image.jpg')        //
       >
         <View style={styles.loginScreenContainer}>
           {/* <AppHeader headerTitle="Login" /> */}
-          <Image source={{ uri: 'http://arjavrathod.com/wp-content/uploads/2022/11/bgf-3.png' }}
+          <Image source={{ uri: 'http://arjavrathod.com/wp-content/uploads/2022/11/bgf-3-1.png' }}
             style={{ width: 350, height: 110, }} />
           <Card containerStyle={styles.loginCardContainer}>
             <Card.Title style={{color:"black"}}>Prompt Talk</Card.Title>
