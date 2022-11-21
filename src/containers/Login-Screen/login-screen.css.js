@@ -30,6 +30,6 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },textInput:{
-    color:'red',
+    color: 'black'
   },
 });

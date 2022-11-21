@@ -16,12 +16,12 @@ const publicDirectoryPath = path.join(__dirname, 'src');
 app.use(express.static(publicDirectoryPath)); //To use the components of Public Directory
 
 io.on('connection', (socket) => {
-    console.log("New WebSocket Connection");
+    //console.log("New WebSocket Connection");
 
     socket.on('join', ({userName, room}, callback) => {
-        console.log("ENtered in Connection",userName,room);
+        //console.log("ENtered in Connection",userName,room);
         const{ error, user} = addUser({id: socket.id, userName, room});
-        console.log("CHATT:",user);
+        //console.log("CHATT:",user);
         if (error) {
             return callback(error);
         }
@@ -39,9 +39,9 @@ io.on('connection', (socket) => {
 
 
     socket.on('chatMessage', (message, callback) => {
-        console.log("Inside chatMessage");
+        //console.log("Inside chatMessage");
         const user = getUser(socket.id);
-        console.log("Inside chatMessage ::", user);
+        //console.log("Inside chatMessage ::", user);
         // const filter = new Filter();
         // if(filter.isProfane(message)){
         //     return callback('Profanity is not allowed!');
@@ -70,7 +70,7 @@ io.on('connection', (socket) => {
 });
 
 server.listen(PORT, () => {
-    console.log("Server is running on Port:", PORT);
+    //console.log("Server is running on Port:", PORT);
 });
 
 

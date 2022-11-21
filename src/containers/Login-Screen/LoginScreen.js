@@ -37,12 +37,12 @@ const LoginScreen = (props) => {
     }
     // this.setState({ myNumber: newText });
     setValues({ ...values, [name]: newText });
-    console.log(values);
+    //console.log(values);
   };
 
   const handleUserChange = (name) => (text) => {
     setValues({ ...values, [name]: text });
-    console.log(values);
+    //console.log(values);
   };
 
   useEffect(() => {
@@ -88,11 +88,11 @@ const LoginScreen = (props) => {
           <Image source={{ uri: 'http://arjavrathod.com/wp-content/uploads/2022/11/bgf-3.png' }}
             style={{ width: 350, height: 110, }} />
           <Card containerStyle={styles.loginCardContainer}>
-            <Card.Title>Prompt Talk</Card.Title>
+            <Card.Title style={{color:"black"}}>Prompt Talk</Card.Title>
             <Card.Divider />
             <View>
               <MyRoomNumberTextInput
-                placeholder="Enter Room Number"
+                placeholder="Enter 4 digit room number"
                 placeholderTextColor="#fff"
                 style={styles.textInput}
                 value={values.roomName}
@@ -106,7 +106,7 @@ const LoginScreen = (props) => {
                 onChangeText={handleUserChange('userName')}
               />
               <MyButton
-                title="Login"
+                title="Join"
                 onPress={() => {
                   handleLogin();
                 }}

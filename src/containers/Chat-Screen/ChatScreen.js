@@ -18,10 +18,10 @@ const ChatScreen = (props) => {
   useEffect(() => {
     SOCKET.on('message', (data) => {
       if (data.length !== undefined) {
-        console.log("Client side if part:", data);
+        //console.log("Client side if part:", data);
         if (props.route.params.id !== data[0].user._id) {
           if (!isRendered.current) {
-            console.log("Inside Message gifted", isRendered.current);
+            //console.log("Inside Message gifted", isRendered.current);
             setMessages((previousMessages) =>
               GiftedChat.append(previousMessages, data),
             );
@@ -29,10 +29,10 @@ const ChatScreen = (props) => {
         }
       }
       else if (data.length === undefined) {
-        console.log("Client side else part:", messages);
+        //console.log("Client side else part:", messages);
         if (props.route.params.id !== data.id) {
           if (!isRendered.current) {
-            console.log("Inside Message gifted", isRendered.current);
+            //console.log("Inside Message gifted", isRendered.current);
             setMessages((previousMessages) =>
               GiftedChat.append(previousMessages, data),
             );
@@ -40,9 +40,9 @@ const ChatScreen = (props) => {
         }
       }
       else {
-        console.log("No data");
+        //console.log("No data");
       }
-      console.log(props.route.params.userName);
+      //console.log(props.route.params.userName);
 
     });
     return () => {
@@ -52,7 +52,7 @@ const ChatScreen = (props) => {
   }, []);
 
   const onSend = useCallback((message = []) => {
-    console.log("Message on send:::", message);
+    //console.log("Message on send:::", message);
     setMessages((previousMessages) =>
       GiftedChat.append(previousMessages, message),
     );

@@ -1,7 +1,7 @@
 const users = []
 
 const addUser = ({id, userName, room}) => {
-    console.log("Inside addUser",id,userName,room);
+    //console.log("Inside addUser",id,userName,room);
     //clean the data
     userName = userName
     room = room
@@ -19,14 +19,14 @@ const addUser = ({id, userName, room}) => {
     //Validate userName
     if(existingUser) {
         
-            console.log( "Username is in user") 
+            //console.log( "Username is in user") 
       
     }
 
     //Store User
     const user = {id, userName, room}
     users.push(user);
-    console.log("USER::",user);
+    //console.log("USER::",user);
     return {user};
 };
 

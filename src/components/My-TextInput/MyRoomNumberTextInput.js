@@ -8,7 +8,7 @@ const MyRoomNumberTextInput = (props) => {
     <View style={styles.viewInput}>
       <Input
           placeholder={props.placeholder}
-          placeholderTextColor={props.red}
+          placeholderTextColor={props.black}
           errorStyle={props.errorStyle}
           maxLength={4}
           keyboardType="numeric"
