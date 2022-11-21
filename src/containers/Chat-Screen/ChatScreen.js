@@ -176,7 +176,8 @@ const ChatScreen = (props) => {
           uri:
             'http://arjavrathod.com/wp-content/uploads/2022/11/987.jpg',
         }}
-        
+        //You can also set image from your project folder
+        //require('./images/background_image.jpg')        //
       >
       <AppHeader
       headerTitle={props.route.params.roomName}
