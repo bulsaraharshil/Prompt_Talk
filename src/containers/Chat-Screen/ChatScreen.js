@@ -174,7 +174,7 @@ const ChatScreen = (props) => {
         //We are using online image to set background
         source={{
           uri:
-            'http://arjavrathod.com/wp-content/uploads/2022/11/987.jpg',
+          'http://arjavrathod.com/wp-content/uploads/2022/11/987-copy.png',
         }}
         //You can also set image from your project folder
         //require('./images/background_image.jpg')        //
