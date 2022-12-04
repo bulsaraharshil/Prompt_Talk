@@ -6,7 +6,7 @@ export default StyleSheet.create({
     borderTopWidth: 0,
     marginHorizontal: 10,
     marginBottom: 4.5,
-    // marginLeft: '12%', // add icon
+    marginLeft: '12%', // add icon
     borderRadius: 50,
     borderColor: '#FFE0E0',
   },
