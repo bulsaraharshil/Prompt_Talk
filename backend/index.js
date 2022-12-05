@@ -2,12 +2,13 @@ const path = require('path');
 const http = require('http');
 const express = require('express');
 const socketio = require('socket.io');
-
+const cors = require('cors');
 const {generateMessage, generateLocationMessage} = require('./utils/messages');
-const {addUser, removeUser, getUser, getUsersInRoom} = require('./utils/users');
+const {addUser, removeUser, getUser, get_users, getUsersInRoom} = require('./utils/users');
 
 const app = express();
 const server = http.createServer(app);
+app.use(cors());
 const io = socketio(server);
 
 const PORT = process.env.PORT || 3000;
@@ -69,8 +70,12 @@ io.on('connection', (socket) => {
     });
 });
 
+app.get('/users', (req, res) => {
+    res.send({users: get_users()});
+})
+
 server.listen(PORT, () => {
-    //console.log("Server is running on Port:", PORT);
+    console.log("Server is running on Port:", PORT);
 });
 
 

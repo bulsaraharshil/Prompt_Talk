@@ -7,6 +7,7 @@ export default StyleSheet.create({
   button: {
     alignItems: 'center',
     backgroundColor: '#0F0326',
+    padding: 15,
   },
   buttonTitle: {
     color: 'white',

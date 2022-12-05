@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, Alert, Image, ImageBackground, SafeAreaView } from 'react-native';
+import { View, Alert, Image, ImageBackground, SafeAreaView, Text } from 'react-native';
 import { Card } from 'react-native-elements';
 // import MyRoomNumberTextInput from '../../components/My-TextInput/MyRoomNumberTextInput';
 import MyRoomNumberTextInput from '../../components/My-TextInput/MyRoomNumberTextInput';
 import MyUserNameTextInput from '../../components/My-TextInput/MyUserNameTextInput';
 import MyButton from '../../components/My-Button/MyButton';
 import styles from './login-screen.css';
-import { SOCKET } from '../../config/config';
+import { SOCKET, API_URL } from '../../config/config';
+import { getUsersInRoom } from '../../../backend/utils/users';
 import 'react-native-get-random-values';
 import { useIsFocused } from '@react-navigation/native';
 import 'react-native-get-random-values';
@@ -21,6 +22,32 @@ const LoginScreen = (props) => {
     id: '',
   });
 
+  const handleChange = (name) => (text) => {
+    
+    setValues({...values, [name]: text});
+    console.log(values);
+  };
+
+  useEffect(() => {
+    return () => {
+      setValues({});
+    };
+  }, [isFocused]);
+
+  // const validateUser =  (room,userName)=>{
+  //   return fetch('http://10.0.0.99:19000/users')
+  //     .then((response) => response.text())
+  //     .then((data) =>  {
+  //       return data.users.find((user) => user.room === room && user.userName === userName);
+  //     });
+  //   }
+
+  const validateUser = async (room, userName) => {
+    const response = await fetch(`${API_URL}/users`);
+    const data = await response.json();
+    return data.users.find((user) => user.room === room && user.userName === userName);
+  };
+  
   const handleRoomChange = (name) => (text) => {
 
     let newText = '';
@@ -51,9 +78,11 @@ const LoginScreen = (props) => {
     };
   }, [isFocused]);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
 
     if (values.roomName && values.userName) {
+      let checkUser = await validateUser(values.roomName, values.userName);
+      if (checkUser === undefined) {
       const id = uuidv4();
       SOCKET.connect();
       SOCKET.emit('join', { userName: values.userName, room: values.roomName });
@@ -68,7 +97,10 @@ const LoginScreen = (props) => {
     } else if (!values.userName) {
       Alert.alert('Please enter user name');
     }
-
+    else {
+      Alert.alert('User already exists');
+    }
+  }
   };
 
   return (

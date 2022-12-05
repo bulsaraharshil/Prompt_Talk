@@ -1,10 +1,15 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { GiftedChat, InputToolbar, Send, Bubble } from 'react-native-gifted-chat';
-import { TouchableOpacity, Image, Alert, ImageBackground, SafeAreaView, View } from 'react-native';
+import { TouchableOpacity, Image, Alert, ImageBackground, SafeAreaView, View, Linking } from 'react-native';
+import * as Location from 'expo-location'
+import * as Permissions from 'expo-permissions'
+import { FontAwesome } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 import AppHeader from '../../components/App-Header/AppHeader';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import styles from './chat-screen.css';
 import { SOCKET } from '../../config/config';
+
 import { Header, Text } from 'react-native-elements';
 
 
@@ -14,12 +19,11 @@ const ChatScreen = (props) => {
   const [messages, setMessages] = useState([]);
   const isRendered = useRef(false);
 
-
   useEffect(() => {
     SOCKET.on('message', (data) => {
       if (data.length !== undefined) {
         //console.log("Client side if part:", data);
-        if (props.route.params.id !== data[0].user._id) {
+        if (props.route?.params?.id !== data[0].user._id){
           if (!isRendered.current) {
             //console.log("Inside Message gifted", isRendered.current);
             setMessages((previousMessages) =>
@@ -49,7 +53,7 @@ const ChatScreen = (props) => {
       isRendered.current = true;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[]);
+  }, []);
 
   const onSend = useCallback((message = []) => {
     //console.log("Message on send:::", message);
@@ -57,7 +61,7 @@ const ChatScreen = (props) => {
       GiftedChat.append(previousMessages, message),
     );
     SOCKET.emit('chatMessage', message);
-  });
+  }, []);
 
   const renderInputToolbar = (props) => {
     return (
@@ -82,8 +86,7 @@ const ChatScreen = (props) => {
             },
           }}
         />
-        
-        <TouchableOpacity style={styles.inputToolbarTouchableOpacity}>
+        <TouchableOpacity onPress={()=> Linking.openURL("https://goo.gl/maps/u5Sn4xn5WPXoigRi6")} style={styles.inputToolbarTouchableOpacity}>
           <Ionicons
             name="location-outline"
             style={styles.inputToolbarIcon}
@@ -94,44 +97,26 @@ const ChatScreen = (props) => {
     );
   };
 
-  // const sendLocation = () => {
-  //   Alert.alert(
-  //     'Send Location',
-  //     'Are you sure you want to send your location?',
-  //     [
-  //       {
-  //         text: 'Cancel',
-  //         onPress: () => console.log('Cancel Pressed'),
-  //         style: 'cancel',
-  //       },
-  //       {
-  //         text: 'OK',
-  //         onPress: () => {
-  //           Geolocation.getCurrentPosition(
-  //             (position) => {
-  //               const location = JSON.stringify(position);
-  //               onSend({
-  //                 _id: Math.round(Math.random() * 1000000),
-  //                 text: location,
-  //                 createdAt: new Date(),
-  //                 user: {
-  //                   _id: 1,
-  //                   name: 'React Native'
-  //                 },
-  //               });
-  //             },
-  //             (error) => Alert.alert(error.message),
-  //             { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-  //           );
-  //         },
-  //       },
-  //     ],
-  //     { cancelable: false }
+  // const renderSend = (props) => {
+  //   return (
+  //     <>
+  //       <Send {...props}>
+  //         <Ionicons name="send" size={28} style={styles.sendIcon} />
+  //       </Send>
+  //     </>
   //   );
   // };
-  
-                    
 
+  // const renderSend = (sendProps) => {
+  //   if (sendProps.text.trim().length > 0) {
+  //     return (
+  //       <TouchableOpacity {...props}>
+  //         <Ionicons name="send" size={28} style={styles.sendIcon} />
+  //       </TouchableOpacity>
+  //     );
+  //   }
+  //   return null;
+  // }
 
 
   const renderSend = (props) => {
