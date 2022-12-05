@@ -75,6 +75,8 @@ const ChatScreen = (props) => {
               flex: 1,
               alignItems: 'center',
               paddingHorizontal: 22,
+              paddingVertical:12,
+              marginTop:5
             },
             multiline: true,
             returnKeyType: 'go',
