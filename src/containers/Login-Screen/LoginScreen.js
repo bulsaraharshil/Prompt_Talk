@@ -79,8 +79,12 @@ const LoginScreen = (props) => {
   }, [isFocused]);
 
   const handleLogin = async () => {
-
-    if (values.roomName && values.userName) {
+     if (!values.roomName) {
+      Alert.alert('Please enter room number');
+    } else if (!values.userName) {
+      Alert.alert('Please enter user name');
+    }
+    else if (values.roomName && values.userName) {
       let checkUser = await validateUser(values.roomName, values.userName);
       if (checkUser === undefined) {
       const id = uuidv4();
@@ -92,11 +96,7 @@ const LoginScreen = (props) => {
         id,
       }
       );
-    } else if (!values.roomName) {
-      Alert.alert('Please enter room number');
-    } else if (!values.userName) {
-      Alert.alert('Please enter user name');
-    }
+    } 
     else {
       Alert.alert('User already exists');
     }
